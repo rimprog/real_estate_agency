@@ -3,6 +3,23 @@
 from django.db import migrations
 
 
+def copy_owners_info_from_flats(apps, schema_editor):
+    Flat = apps.get_model('property', 'Flat')
+    Owner = apps.get_model('property', 'Owner')
+    for flat in Flat.objects.all():
+        Owner.objects.get_or_create(
+            full_name=flat.owner,
+            owner_phonenumber=flat.owners_phonenumber,
+            owner_phone_pure=flat.owner_phone_pure
+        )
+
+
+def move_backward(apps, schema_editor):
+    Owner = apps.get_model('property', 'Owner')
+    all_owners = Owner.objects.all()
+    all_owners.delete()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,4 +27,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(copy_owners_info_from_flats, move_backward)
     ]
