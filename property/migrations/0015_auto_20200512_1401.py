@@ -16,14 +16,6 @@ def set_flats_to_owners(apps, schema_editor):
         owner.flats.set(flats)
 
 
-
-def move_backward(apps, schema_editor):
-    Owner = apps.get_model('property', 'Owner')
-
-    for owner in Owner.objects.all():
-        owner.flats.clear()
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -31,5 +23,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(set_flats_to_owners, move_backward)
+        migrations.RunPython(set_flats_to_owners)
     ]
