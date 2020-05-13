@@ -43,7 +43,6 @@ class Owner(models.Model):
         Flat,
         verbose_name='квартиры',
         related_name='owners',
-        db_index=True
     )
 
 
